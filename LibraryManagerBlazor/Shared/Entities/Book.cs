@@ -20,6 +20,7 @@ namespace LibraryManagerBlazor.Shared.Entities
         public string CategoryName { get; set; }
         public string CoverName { get; set; }
 
+        public string? CustomerName { get; set; }
         public long? CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
 

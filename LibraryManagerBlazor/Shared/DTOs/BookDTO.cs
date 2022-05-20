@@ -17,6 +17,7 @@ namespace LibraryManagerBlazor.Shared.DTOs
         public string Author { get; set; }
         public bool Available { get; set; }
         public long? CustomerId { get; set; }
+        public string? CustomerName { get; set; } 
         public string CategoryName { get; set; }
         public string CoverName { get; set; }
 

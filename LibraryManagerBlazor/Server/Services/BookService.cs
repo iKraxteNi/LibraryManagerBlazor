@@ -34,8 +34,8 @@ namespace LibraryManagerBlazor.Server.Services
         {
             var book = _context.Book.Select(x => new Book()
             {
-                
-                Id =  x.Id,
+
+                Id = x.Id,
                 Name = x.Name,
                 Author = x.Author,
                 CategoryName = x.CategoryName,
@@ -44,6 +44,20 @@ namespace LibraryManagerBlazor.Server.Services
             }).ToList();
             return book;
 
+        }
+
+
+
+        public IEnumerable<Book> GetRentedBook()
+        {
+            var book = _context.Book.Where(y => y.Available == false).Select(x => new Book()
+            {
+               Id = x.Id,
+                Name = x.Name,
+                Author = x.Author,
+                CustomerName = x.CustomerName
+            }).ToList();
+            return book;
         }
     }
 }

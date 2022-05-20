@@ -48,9 +48,20 @@ namespace LibraryManagerBlazor.Server.Services
         {
             var customer = _context.Customer.FirstOrDefault(x => x.CustomerId == customerId);
             var book = _context.Book.FirstOrDefault(x => x.Id == bookId);
-            customer.Book.Add(book);
+
             book.CustomerId = customer.CustomerId;
+            book.CustomerName = customer.Name;
             book.Available = false;
+            _context.SaveChanges();
+        }
+        public void CustomerReturnBook(string books)
+        {
+            long bookId = int.Parse(books); 
+            var book = _context.Book.FirstOrDefault(x => x.Id == bookId);
+
+            book.CustomerId = null;
+            book.CustomerName = null;
+            book.Available = true;
             _context.SaveChanges();
         }
 

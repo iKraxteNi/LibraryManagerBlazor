@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace LibraryManagerBlazor.Server.Controllers
 {
-    
+
     [ApiController]
     public class CustomerController : ControllerBase
     {
@@ -54,6 +54,14 @@ namespace LibraryManagerBlazor.Server.Controllers
         public IActionResult BookAssignCustomer([FromBody] AssignBookModel data)
         {
             _customerService.AssignBook(data.customerId, data.bookId);
+            return Ok();
+        }
+
+        [Route("api/customer/returnbook")]
+        [HttpPost]
+        public IActionResult CustomerReturnBook([FromBody] string bookId)
+        {
+            _customerService.CustomerReturnBook(bookId);
             return Ok();
         }
     }

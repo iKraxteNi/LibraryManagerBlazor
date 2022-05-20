@@ -1,0 +1,83 @@
+﻿@page "/return"
+@using Microsoft.AspNetCore.Authorization
+@using LibraryManagerBlazor.Shared.DTOs.FormModels
+@using Microsoft.AspNetCore.Components
+@using System.Net
+@using Newtonsoft.Json
+@using LibraryManagerBlazor.Shared.DTOs
+@using System.Threading
+@inject HttpClient Http
+
+<h3>Return</h3>
+
+@if (_rentedbook == null)
+{
+    <p><em>Not data</em></p>
+}
+else
+{
+    <div class="panel panel-default mt-5" style="width: auto">
+        <div class="panel-heading">
+            Stanowiska Pracowników
+        </div>
+        <div class="panel-body">
+            <form>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Klient
+                        </th>
+                        <th>
+                            Nazwa Ksiązki
+                        </th>
+
+                        <th></th>
+                    </tr>
+                    @foreach (var item in (_rentedbook))
+                    {
+                        <tr>
+
+                            <td>
+                                @item.CustomerName
+                            </td>
+
+                            <td>
+                                @item.Name
+                            </td>
+
+                            <td>
+                                <button @onclick="() => RemoveAssignedBook(item.Id)" type="button" class="btn btn-danger">Usuń</button>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </form>
+        </div>
+    </div>
+}
+@code {
+    private BookDTO[] _rentedbook;
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        _rentedbook = await Http.GetFromJsonAsync<BookDTO[]>("api/book/rented/check");
+    }
+
+
+    private async Task RemoveAssignedBook(long bookId)
+    {
+        string books = bookId.ToString();
+        string json = JsonConvert.SerializeObject(books);
+        StringContent httpContent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+        var resp = Http.PostAsync("api/customer/returnbook", httpContent);
+        Thread.Sleep(200);
+        _rentedbook = await Http.GetFromJsonAsync<BookDTO[]>("api/book/rented/check");
+    }
+
+
+}

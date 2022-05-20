@@ -75,5 +75,13 @@ namespace LibraryManagerBlazor.Server.Controllers
             }
             return Ok();
         }
+
+        [Route("api/book/rented/check")]
+        [HttpGet]
+        public IEnumerable<BookDTO> GetRentedBook()
+        {
+            return _mapper.Map<IEnumerable<BookDTO>>(_bookService.GetRentedBook().ToArray());
+        }
+        
     }
 }
