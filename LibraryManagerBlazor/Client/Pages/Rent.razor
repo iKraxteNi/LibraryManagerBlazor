@@ -1,0 +1,105 @@
+﻿@page "/rent"
+@using Microsoft.AspNetCore.Authorization
+@using LibraryManagerBlazor.Shared.DTOs.FormModels
+@using Microsoft.AspNetCore.Components
+@using System.Net
+@using Newtonsoft.Json
+@using LibraryManagerBlazor.Shared.DTOs
+@using System.Threading
+@inject HttpClient Http
+
+@if (_book == null && _customer == null)
+{
+    <p><em>Loading...data</em></p>
+}
+else
+{
+    <div class="panel panel-default mt-5" style="width: auto">
+        @if (_successBool == true)
+        {
+            <div class="alert alert-success" role="alert">
+                Poprawnie wypożyczono.
+            </div>
+        }
+
+        <div class="panel-heading">
+            Dodaj książkę
+        </div>
+        <div class="panel-body">
+
+            <EditForm Model="@modelb" OnValidSubmit="@OnValidSubmit">
+                <fieldset class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label class="col-form-label">Kategoria</label>
+                        </div>
+
+                        <div class="col-sm-10">
+                            <select class="form-control form-control-sm" aria-label="Default select example" @bind="modelb.customerId">
+                                <option selected>Wybierz kategorie</option>
+                                @foreach (var item in _customer)
+                                {
+                                    <option value="@item.CustomerId">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label class="col-form-label">Rodzaj książkę</label>
+                        </div>
+
+                        <div class="col-sm-10">
+                            <select class="form-control form-control-sm" aria-label="Default select example" @bind="modelb.bookId">
+                                <option selected>Wybierz typ książkę</option>
+                                @foreach (var item in _book)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+
+
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Dodaj</button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+@code {
+
+    private BookDTO[] _book;
+    private CustomerDTO[] _customer;
+    private bool _successBool;
+
+    AssignBookModel modelb = new AssignBookModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        _book = await Http.GetFromJsonAsync<BookDTO[]>("api/book/availabl");
+        _customer = await Http.GetFromJsonAsync<CustomerDTO[]>("api/customer");
+    }
+
+
+    private async Task OnValidSubmit()
+    {
+        string json = JsonConvert.SerializeObject(modelb);
+        StringContent httpContent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+        var resp = await Http.PostAsync("api/customer/assignbook", httpContent);
+
+        _book = await Http.GetFromJsonAsync<BookDTO[]>("api/book/availabl");
+        _successBool = true;
+         
+    }
+
+    //wyswietlanie wynajętych oddawanie trzeba 
+
+}
