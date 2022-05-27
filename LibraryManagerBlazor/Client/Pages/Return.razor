@@ -8,8 +8,6 @@
 @using System.Threading
 @inject HttpClient Http
 
-<h3>Return</h3>
-
 @if (_rentedbook == null)
 {
     <p><em>Not data</em></p>
@@ -18,7 +16,7 @@ else
 {
     <div class="panel panel-default mt-5" style="width: auto">
         <div class="panel-heading">
-            Stanowiska Pracowników
+            Wypożyczone książki
         </div>
         <div class="panel-body">
             <form>
@@ -28,7 +26,7 @@ else
                             Klient
                         </th>
                         <th>
-                            Nazwa Ksiązki
+                            Nazwa Książki
                         </th>
 
                         <th></th>
@@ -46,7 +44,7 @@ else
                             </td>
 
                             <td>
-                                <button @onclick="() => RemoveAssignedBook(item.Id)" type="button" class="btn btn-danger">Usuń</button>
+                                <button @onclick="() => RemoveAssignedBook(item.Id)" type="button" class="btn btn-danger">Zwróć</button>
                             </td>
                         </tr>
                     }

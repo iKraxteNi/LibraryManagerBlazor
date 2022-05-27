@@ -9,13 +9,13 @@ a, .btn-link {
 }
 
 .btn-primary {
-    color: #fff;
+    color: #7CFAFA;
     background-color: #1b6ec2;
     border-color: #1861ac;
 }
 
 .content {
-    padding-top: 1.1rem;
+    padding-top: 2.1rem;
 }
 
 .valid.modified:not([type=checkbox]) {

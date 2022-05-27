@@ -79,9 +79,9 @@ else
     private CustomerDTO[] _customer;
     private bool _successBool;
 
-    AssignBookModel modelb = new AssignBookModel();
+    AssignBookModel modelb = new AssignBookModel(); 
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync() // przy załadowaniu stronki
     {
 
         _book = await Http.GetFromJsonAsync<BookDTO[]>("api/book/availabl");
@@ -89,7 +89,7 @@ else
     }
 
 
-    private async Task OnValidSubmit()
+    private async Task OnValidSubmit()  // po przyciśnięciu + przeładuj 
     {
         string json = JsonConvert.SerializeObject(modelb);
         StringContent httpContent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
@@ -100,6 +100,6 @@ else
          
     }
 
-    //wyswietlanie wynajętych oddawanie trzeba 
+    
 
 }
